@@ -1,0 +1,2 @@
+# Optional developer tools
+pytest-cov==6.0.0

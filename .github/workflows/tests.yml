@@ -1,0 +1,56 @@
+name: TestForge SDET Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Start application
+        run: |
+          nohup python app/app.py > app.log 2>&1 &
+
+      - name: Wait for application
+        run: |
+          python - <<'PY'
+          import time
+          import requests
+
+          for _ in range(30):
+              try:
+                  response = requests.get("http://127.0.0.1:5000/api/health", timeout=2)
+                  if response.status_code == 200:
+                      break
+              except requests.RequestException:
+                  pass
+              time.sleep(1)
+          else:
+              raise SystemExit("Application did not start")
+          PY
+
+      - name: Run automated tests
+        run: |
+          pytest --html=reports/report.html --self-contained-html
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: reports/report.html
