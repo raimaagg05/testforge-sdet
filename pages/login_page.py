@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class LoginPage:
@@ -17,13 +18,46 @@ class LoginPage:
         self.driver.get(base_url)
 
     def enter_email(self, email):
-        self.wait.until(EC.visibility_of_element_located(self.EMAIL)).send_keys(email)
+        element = self.wait.until(
+            EC.visibility_of_element_located(self.EMAIL)
+        )
+        element.clear()
+        element.send_keys(email)
 
     def enter_password(self, password):
-        self.wait.until(EC.visibility_of_element_located(self.PASSWORD)).send_keys(password)
+        element = self.wait.until(
+            EC.visibility_of_element_located(self.PASSWORD)
+        )
+        element.clear()
+        element.send_keys(password)
 
     def click_login(self):
-        self.wait.until(EC.element_to_be_clickable(self.LOGIN_BUTTON)).click()
+        button = self.wait.until(
+            EC.presence_of_element_located(self.LOGIN_BUTTON)
+        )
+
+        # Scroll the button into the visible viewport.
+        self.driver.execute_script(
+            """
+            arguments[0].scrollIntoView({
+                behavior: 'instant',
+                block: 'center',
+                inline: 'center'
+            });
+            """,
+            button
+        )
+
+        # Move the mouse to the element before clicking.
+        # This makes the interaction more reliable in headless Chrome.
+        self.wait.until(
+            EC.element_to_be_clickable(self.LOGIN_BUTTON)
+        )
+
+        ActionChains(self.driver) \
+            .move_to_element(button) \
+            .click() \
+            .perform()
 
     def login(self, email, password):
         self.enter_email(email)

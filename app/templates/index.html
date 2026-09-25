@@ -1,51 +1,717 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>TestForge Demo Store</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>TestForge Store</title>
+
     <style>
-        body { font-family: Arial, sans-serif; max-width: 520px; margin: 60px auto; }
-        input { display: block; width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
-        button { padding: 10px 18px; cursor: pointer; }
-        #message { margin-top: 15px; font-weight: bold; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f7fb;
+        color: #1f2937;
+      }
+
+      /* ================= NAVBAR ================= */
+
+      .navbar {
+        height: 72px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 7%;
+        border-bottom: 1px solid #e5e7eb;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #4f46e5;
+      }
+
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #4f46e5;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #4b5563;
+        font-size: 15px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #4f46e5;
+      }
+
+      .nav-login {
+        text-decoration: none;
+        background: #4f46e5;
+        color: white;
+        padding: 11px 20px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .nav-login:hover {
+        background: #4338ca;
+        transform: translateY(-2px);
+      }
+
+      /* ================= HERO ================= */
+
+      .hero {
+        min-height: 430px;
+        padding: 75px 7%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 50px;
+        background: linear-gradient(135deg, #eef2ff, #f8fafc);
+      }
+
+      .hero-content {
+        max-width: 600px;
+      }
+
+      .badge {
+        display: inline-block;
+        background: #e0e7ff;
+        color: #4338ca;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        color: #111827;
+      }
+
+      .hero h1 span {
+        color: #4f46e5;
+      }
+
+      .hero p {
+        font-size: 17px;
+        line-height: 1.7;
+        color: #6b7280;
+        margin-bottom: 30px;
+      }
+
+      .hero-button {
+        display: inline-block;
+        text-decoration: none;
+        background: #4f46e5;
+        color: white;
+        padding: 14px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .hero-button:hover {
+        background: #4338ca;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+      }
+
+      .hero-card {
+        width: 300px;
+        height: 250px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .hero-card-icon {
+        font-size: 90px;
+      }
+
+      .floating-card {
+        position: absolute;
+        background: white;
+        padding: 13px 18px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .floating-one {
+        top: 25px;
+        left: -35px;
+      }
+
+      .floating-two {
+        bottom: 25px;
+        right: -35px;
+      }
+
+      /* ================= PRODUCTS ================= */
+
+      .products-section {
+        padding: 75px 7%;
+        background: white;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 45px;
+      }
+
+      .section-heading span {
+        color: #4f46e5;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .section-heading h2 {
+        font-size: 32px;
+        margin-top: 10px;
+        color: #111827;
+      }
+
+      .section-heading p {
+        margin-top: 10px;
+        color: #6b7280;
+      }
+
+      .product-grid {
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+      }
+
+      .product-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 25px;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      }
+
+      .product-icon {
+        height: 130px;
+        border-radius: 14px;
+        background: #eef2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 55px;
+        margin-bottom: 20px;
+      }
+
+      .product-card h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .product-card p {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 18px;
+      }
+
+      .product-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .price {
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .cart-button {
+        border: none;
+        background: #4f46e5;
+        color: white;
+        padding: 9px 13px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .cart-button:hover {
+        background: #4338ca;
+      }
+
+      /* ================= LOGIN ================= */
+
+      .login-section {
+        padding: 80px 20px;
+        background: #f5f7fb;
+      }
+
+      .login-container {
+        max-width: 430px;
+        margin: auto;
+        background: white;
+        padding: 38px;
+        border-radius: 20px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.07);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+
+      .login-icon {
+        width: 55px;
+        height: 55px;
+        background: #eef2ff;
+        color: #4f46e5;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 25px;
+      }
+
+      .login-header h2 {
+        font-size: 27px;
+        margin-bottom: 8px;
+      }
+
+      .login-header p {
+        color: #6b7280;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 7px;
+        color: #374151;
+      }
+
+      input {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 9px;
+        outline: none;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      input:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+
+      #loginButton {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 9px;
+        background: #4f46e5;
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 5px;
+      }
+
+      #loginButton:hover {
+        background: #4338ca;
+        transform: translateY(-2px);
+      }
+
+      #message {
+        margin-top: 18px;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        min-height: 18px;
+      }
+
+      /* ================= FOOTER ================= */
+
+      footer {
+        background: #111827;
+        color: white;
+        padding: 35px 7%;
+        text-align: center;
+      }
+
+      footer h3 {
+        margin-bottom: 8px;
+      }
+
+      footer p {
+        color: #9ca3af;
+        font-size: 13px;
+      }
+
+      .footer-tag {
+        margin-top: 15px;
+        color: #818cf8;
+        font-size: 12px;
+      }
+
+      /* ================= RESPONSIVE ================= */
+
+      @media (max-width: 800px) {
+        .navbar {
+          padding: 0 5%;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          flex-direction: column;
+          text-align: center;
+          padding: 60px 5%;
+        }
+
+        .hero h1 {
+          font-size: 38px;
+        }
+
+        .hero-card {
+          width: 260px;
+        }
+
+        .product-grid {
+          grid-template-columns: 1fr;
+          max-width: 420px;
+        }
+
+        .floating-one {
+          left: -10px;
+        }
+
+        .floating-two {
+          right: -10px;
+        }
+      }
+
+      @media (max-width: 450px) {
+        .nav-login {
+          display: none;
+        }
+
+        .hero h1 {
+          font-size: 32px;
+        }
+
+        .login-container {
+          padding: 28px 22px;
+        }
+      }
     </style>
-</head>
-<body>
-    <h1>TestForge Demo Store</h1>
-    <p>Demo application used as the system under test.</p>
+  </head>
 
-    <form id="loginForm">
-        <input id="email" type="email" placeholder="Email">
-        <input id="password" type="password" placeholder="Password">
-        <button id="loginButton" type="submit">Login</button>
-    </form>
+  <body>
+    <!-- ================= NAVBAR ================= -->
 
-    <div id="message"></div>
+    <nav class="navbar">
+      <div class="logo">
+        <div class="logo-icon">TF</div>
+        TestForge
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#login">Login</a></li>
+      </ul>
+
+      <a href="#login" class="nav-login">Sign In</a>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="badge">✦ Modern Demo Store</div>
+
+        <h1>
+          Discover products<br />
+          <span>you'll love.</span>
+        </h1>
+
+        <p>
+          Explore our collection of quality tech products designed to make your
+          everyday work easier, faster, and more productive.
+        </p>
+
+        <a href="#products" class="hero-button"> Explore Products → </a>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-icon">🛍️</div>
+
+        <div class="floating-card floating-one">✓ Quality Products</div>
+
+        <div class="floating-card floating-two">⚡ Fast & Simple</div>
+      </div>
+    </section>
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section class="products-section" id="products">
+      <div class="section-heading">
+        <span>Our Collection</span>
+
+        <h2>Featured Products</h2>
+
+        <p>Simple products for your everyday technology needs.</p>
+      </div>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-icon">🖱️</div>
+
+          <h3>Wireless Mouse</h3>
+
+          <p>
+            Comfortable and reliable wireless mouse for work and everyday use.
+          </p>
+
+          <div class="product-bottom">
+            <div class="price">₹799</div>
+
+            <button class="cart-button">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon">⌨️</div>
+
+          <h3>Mechanical Keyboard</h3>
+
+          <p>Responsive mechanical keyboard designed for comfortable typing.</p>
+
+          <div class="product-bottom">
+            <div class="price">₹2499</div>
+
+            <button class="cart-button">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon">🔌</div>
+
+          <h3>USB-C Hub</h3>
+
+          <p>Expand your connectivity with a compact multi-port USB-C hub.</p>
+
+          <div class="product-bottom">
+            <div class="price">₹1499</div>
+
+            <button class="cart-button">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LOGIN ================= -->
+
+    <section class="login-section" id="login">
+      <div class="login-container">
+        <div class="login-header">
+          <div class="login-icon">🔐</div>
+
+          <h2>Welcome Back</h2>
+
+          <p>Sign in to continue to TestForge Store</p>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email"> Email Address </label>
+
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password"> Password </label>
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button id="loginButton" type="submit">Sign In</button>
+        </form>
+
+        <div id="message"></div>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+      <h3>TestForge Store</h3>
+
+      <p>
+        A demo application created for end-to-end software testing and
+        automation.
+      </p>
+
+      <div class="footer-tag">Built for SDET Testing • UI • API • Database</div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
 
     <script>
-        const form = document.getElementById("loginForm");
-        const message = document.getElementById("message");
+      const form = document.getElementById("loginForm");
+      const message = document.getElementById("message");
 
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-            if (!email || !password) {
-                message.textContent = "Email and password are required";
-                return;
-            }
+        /*
+         * Keep the existing validation behavior.
+         * This is required by the existing Selenium tests.
+         */
 
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email, password})
-            });
+        if (!email || !password) {
+          message.textContent = "Email and password are required";
 
-            const data = await response.json();
-            message.textContent = data.message;
+          message.style.background = "#fef2f2";
+          message.style.color = "#dc2626";
+
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/login", {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          });
+
+          const data = await response.json();
+
+          message.textContent = data.message;
+
+          if (response.ok) {
+            message.style.background = "#ecfdf5";
+            message.style.color = "#059669";
+          } else {
+            message.style.background = "#fef2f2";
+            message.style.color = "#dc2626";
+          }
+        } catch (error) {
+          message.textContent = "Unable to connect to the server";
+
+          message.style.background = "#fef2f2";
+          message.style.color = "#dc2626";
+        }
+      });
+
+      /*
+       * Small demo interaction for Add to Cart buttons.
+       * This does not affect the automated login tests.
+       */
+
+      const cartButtons = document.querySelectorAll(".cart-button");
+
+      cartButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const originalText = button.textContent;
+
+          button.textContent = "✓ Added";
+
+          button.style.background = "#059669";
+
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = "#4f46e5";
+          }, 1200);
         });
+      });
     </script>
-</body>
+  </body>
 </html>
